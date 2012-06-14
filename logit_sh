@@ -1,0 +1,93 @@
+#!/bin/bash
+
+# logit_sh
+
+# Robert Jones  2012  jones@craic.com   Craic Computing LLC
+
+# logit_sh is a companion bash shell script to the Ruby script 'logit'
+
+# The two work in tandem to allow users to selectively record UNIX shell commands and comments to a log file
+# This goes beyond the limitations of the standard UNIX history mechanism and provides a file that itself
+# can be run as an executable shell script
+
+# The logit script will first create a custom logit shell from which commands can be recorded
+# calls to logit within the shell will record specific commands and comments as desired without
+# recording other commands
+
+# By setting up the shell we can create a history file specific for this directory and access
+# records within it
+
+# You can change the color used to signal that you are in a logit shell by setting the
+# LOGIT_COLOR environment variable outside the sehell to an ANSI Escape Sequence Color
+# like this:
+# export LOGIT_COLOR="00;34"
+
+# Here are the other colors - note that 'brown' is really yellow and 'purple' is magenta - go figure
+# COLOR_BLACK="00;30"
+# COLOR_RED="00;31"
+# COLOR_BLUE="00;34"
+# COLOR_GREEN="00;32"
+# COLOR_CYAN="00;36"
+# COLOR_PURPLE="00;35"
+# COLOR_BROWN="00;33"
+
+# Red is the default color
+COLOR_RED="00;31"
+
+COLOR_OFF="\033[00m"
+
+if [ ! ${LOGIT_COLOR} ]
+then
+	export LOGIT_COLOR=${COLOR_RED}
+fi
+
+export LOGIT_COLOR_STR="\033[${LOGIT_COLOR}m\033[1m"
+
+# Default filename is logit.log in current directory
+
+export LOGIT_LOGFILE="$PWD/logit.log"
+
+if [ $# -eq 1 ] 
+then
+  export LOGIT_LOGFILE=$1
+fi
+
+
+echo -e "${LOGIT_COLOR_STR}Logit session started --------- 'logit help' for more information, 'exit' to end session${COLOR_OFF}"
+echo -e "Commands are written to ${LOGIT_LOGFILE}\n"
+
+export LOGIT_USERNAME=`whoami`
+
+# Add session message to the log file
+
+echo "#--------------------------------------------------------" >> ${LOGIT_LOGFILE}
+echo -e "# Session started by `whoami` at `date`\n#" >> ${LOGIT_LOGFILE}
+
+# Create the custom prompt command and prompt
+# Hardwire the default PS1 prompt into the shell prompt value as $PS1 is not available inside a script
+
+export PS1="\h:\W \u ${LOGIT_COLOR_STR}logit${COLOR_OFF} $ "
+
+# define a local temporary history file
+export LOGIT_HISTFILE="${PWD}/logit_history"
+
+# this should append the commands to the primary history file ... necessary?
+shopt -s histappend
+
+
+export PROMPT_COMMAND="history | tail -1 >> ${LOGIT_HISTFILE}"
+
+# Create a new interactive subshell - Use --norc ot block loading ~/.bashrc again
+
+# set an env variable to show that we are in a logit shell
+export LOGIT_SHELL=1
+
+bash --norc
+
+export -n LOGIT_SHELL
+
+# delete the local temporary history file
+rm -f $LOGIT_HISTFILE
+
+
+
