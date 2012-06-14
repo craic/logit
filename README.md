@@ -53,7 +53,7 @@ ls -l
 
 #### Installation
 
-Copy the file logit and logit_sh to /usr/local/bin
+Copy the file __logit__ and __logit_sh__ to __/usr/local/bin__
 
 If they are not already, make the scripts executable using __chmod a+x logit__ and __chmod a+x logit_sh__
 
@@ -76,3 +76,18 @@ For example this changes the color to blue:
 ```shell
 $ export LOGIT_COLOR="00;34"
 ```
+
+
+#### License
+
+This code is freely distributed under the terms of the MIT license
+
+<pre>
+	Copyright (c) 2012  Robert Jones
+
+	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+	The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+</pre>
