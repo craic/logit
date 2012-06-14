@@ -62,3 +62,8 @@ If they are not already, make the scripts executable using __chmod a+x logit__ a
 
 
 #### Customizing
+
+The prompt within a logit sub shell has the word 'logit' in red. This reminds you that you are working in a logit shell.
+You can change the color of this to another ANSI terminal color by setting the environment variable LOGIT_COLOR before
+your start a logit shell. You can enter any of the ANSI color escape codes of the form '00;34' - this example changes the 
+color to blue.
