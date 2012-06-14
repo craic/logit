@@ -56,7 +56,7 @@ as a argument to __logit start__
 #### Example Session
 
 ```bash
-jones $ logit start my.log
+jones$ logit start my.log
 Logit session started --------- 'logit help' for more information, 'exit' to end session
 Commands are written to my.log
 
