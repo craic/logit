@@ -45,35 +45,46 @@ Usage
    logit show                       Output the contents of the logit log file
 ```
 
+__logit start__ creates a Bash sub shell, with a modified prompt, in which you can call __logit__ to record specific commands and comments.
+
+The need for a sub shell is due to the limitations and quirks of the Bash history mechanism.
+
+The default log file is __logfile.log__ in the current working directory when logit is started. You can supply an alternate file
+as a argument to __logit start__
+
 
 #### Example Session
 
 ```bash
-jones$ logit start
+jones $ logit start my.log
 Logit session started --------- 'logit help' for more information, 'exit' to end session
-Commands are written to /Users/jones/Documents/craic/craic/logit/sandbox/logit.log
+Commands are written to my.log
 
-jones logit $ ls -l 
-total 24
--rw-r--r--@ 1 jones  staff   579 Jun 13 11:15 README
-[...]
+jones logit $ logit 'this is an example logit session'
+jones logit $ date
+Thu Jun 14 14:11:17 PDT 2012
 jones logit $ logit
-ls -l 
-jones logit $ logit 'List all the files in this directory'
+date
+jones logit $ echo A
+A
+jones logit $ echo B
+B
+jones logit $ logit -1 'log the command before the last one'
+echo A
 jones logit $ exit
-exit
 jones$
 ```
 
-The default log file is logfile.log in the current working directory when logit is started
 
 The log file from this example looks like
 <pre>
 #--------------------------------------------------------
-# Session started by jones at Thu Jun 14 07:50:29 PDT 2012
+# Session started by jones at Thu Jun 14 14:10:57 PDT 2012
 #
-ls -l 
-# List all the files in this directory
+# this is an example logit session
+date
+# log the command before the last one
+echo A
 </pre>
 
 
