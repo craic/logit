@@ -43,13 +43,13 @@ jones$
 The default log file is logfile.log in the current working directory when logit is started
 
 The log file from this example looks like
-
+<pre>
 #--------------------------------------------------------
 # Session started by jones at Thu Jun 14 07:50:29 PDT 2012
 #
 ls -l 
 # List all the files in this directory
-
+</pre>
 
 #### Installation
 
