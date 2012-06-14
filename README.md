@@ -24,10 +24,31 @@ for a shell script that can repeat the tasks on demand.
 #### Example Session
 
 ```bash
-$ logit help
-$ logit start
+jones$ logit start
+Logit session started --------- 'logit help' for more information, 'exit' to end session
+Commands are written to /Users/jones/Documents/craic/craic/logit/sandbox/logit.log
+
+jones logit $ ls -l 
+total 24
+-rw-r--r--@ 1 jones  staff   579 Jun 13 11:15 README
+[...]
+jones logit $ logit
+ls -l 
+jones logit $ logit 'List all the files in this directory'
+jones logit $ exit
+exit
+jones$
 ```
 
+The default log file is logfile.log in the current working directory when logit is started
+
+The log file from this example looks like
+
+#--------------------------------------------------------
+# Session started by jones at Thu Jun 14 07:50:29 PDT 2012
+#
+ls -l 
+# List all the files in this directory
 
 
 #### Installation
