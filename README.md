@@ -54,6 +54,7 @@ ls -l
 #### Installation
 
 Copy the file logit and logit_sh to /usr/local/bin
+
 If they are not already, make the scripts executable using __chmod a+x logit__ and __chmod a+x logit_sh__
 
 #### Operation
