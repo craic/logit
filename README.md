@@ -9,16 +9,41 @@ certain commands from my history. Cutting and pasting them into a file is not ef
 
 In addition I wanted a way to add comments to the log that described what each command was doing for future reference.
 
-logit provides a way to do this. It first creates a custom bash shell instance in which you work. You run the logit
+__logit__ provides a way to do this. It first creates a custom bash shell instance in which you work. You run the logit
 script to record previous commands and/or add comments. All the logit output goes to a specified log file.
 
-You have complete control over what goes into the file.
-
-So you can simply skip over general commands like ls or more that you inevitably use during a work session.
+You have complete control over what goes into the file. So you can simply skip over general commands like 
+ls or more that you inevitably use during a work session.
 
 By adding descriptive comments, the output log file can serve as an annotated record of a work session and may be basis
 for a shell script that can repeat the tasks on demand.
 
+#### Installation
+
+Copy the file __logit__ and __logit_sh__ to __/usr/local/bin__
+
+If they are not already, make the scripts executable using __chmod a+x logit__ and __chmod a+x logit_sh__
+
+#### Usage
+
+```shell
+Usage
+   logit start                      Start a logit shell and log commands to logit.log
+   logit start <filename>           Start a logit shell and log commands to supplied file
+
+   logit "this is a comment"        Log the quoted string as a comment
+
+   logit                            Log the previous command
+   logit 0 "this is a comment"      Log the previous command preceded by a comment line
+
+   logit -N                         Log the Nth previous command
+   logit -N "this is a comment"     Log the Nth previous command preceded by a comment line
+
+   logit N                          Log a specific command from the history
+   logit N "this is a comment"      Log a specific command from the history preceded by a comment line
+
+   logit show                       Output the contents of the logit log file
+```
 
 
 #### Example Session
@@ -51,20 +76,6 @@ ls -l
 # List all the files in this directory
 </pre>
 
-#### Installation
-
-Copy the file __logit__ and __logit_sh__ to __/usr/local/bin__
-
-If they are not already, make the scripts executable using __chmod a+x logit__ and __chmod a+x logit_sh__
-
-#### Operation
-
-```shell
-$ logit help
-```
-
-
-TODO - need more description here
 
 #### Customizing
 

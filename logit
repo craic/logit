@@ -75,16 +75,17 @@ def output_help()
   puts "   logit start <filename>           Start a logit shell and log commands to supplied file"
   puts ""
   puts "   logit \"this is a comment\"        Log the quoted string as a comment"
+  puts ""
   puts "   logit                            Log the previous command"
   puts "   logit 0 \"this is a comment\"      Log the previous command preceded by a comment line"
+  puts ""
   puts "   logit -N                         Log the Nth previous command"
   puts "   logit -N \"this is a comment\"     Log the Nth previous command preceded by a comment line"
-
-  puts "   logit N                          Log a specific command from the history"
-  puts "   logit show                       Output the contents of the logit log file"
-
   puts ""
-  puts "   exit                             Exit the logit shell"
+  puts "   logit N                          Log a specific command from the history"
+  puts "   logit N \"this is a comment\"      Log a specific command from the history preceded by a comment line"
+  puts ""
+  puts "   logit show                       Output the contents of the logit log file"
 end
 
 
