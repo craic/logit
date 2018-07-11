@@ -1,0 +1,173 @@
+#!/usr/bin/env ruby
+
+# logit
+
+# Runs in conjunction with the bash shell script logit_sh
+
+# Robert Jones 2012  Craic Computing LLC   jones@craic.com
+
+# Simple mechanism to record shell commands and comments in a log file
+
+
+# Parse the history and get the line with either ID n or that is offest by n is n is negative
+# Read in the history file and get the offset command - note that the history file does not have id numbers...
+
+def parse_history(n)
+  string = ''
+  
+  if n <= 0
+    # relative offset 
+    n -= 1
+    text = `tail -#{-n} #{ENV['LOGIT_HISTFILE']}`
+  else    
+    # get a specific number
+    text = `grep "^  #{n} " $LOGIT_HISTFILE`
+  end
+
+  # catch the case if the id was not found
+  
+  text.each_line do |line|
+    line.chomp!
+    string = line
+    break
+  end
+
+  string
+end
+
+
+# Add a command from the history to the log, optionally followed by a comment
+def add_command(log_file, id = 0, comment = '')
+  
+  command = parse_history(id)
+  # strip the history number from the command
+  command.sub!(/^\s+\d+\s+/, '')
+  
+  open(log_file, 'ab') do |f| 
+    f.puts "# #{comment}" if comment != ''
+    f.puts command 
+  end
+
+  # echo the command to stdout as well
+  puts command
+end
+
+
+# Add a comment line to the log - preceded by a # character
+def add_comment(log_file, comment)
+  open(log_file, 'ab') { |f| f.puts "# #{comment}" }
+end
+
+
+# Echo the contents of the log file to stdout
+def output_current_log(log_file)
+  return if not File.exists?(log_file)
+  open(log_file, 'rb').each_line { |line| puts line } 
+end
+
+
+# Output a usage message
+def output_help()
+  puts "logit - log specific commands from inside a custom shell"
+  puts ""
+  puts "Usage"  
+  puts "   logit start                      Start a logit shell and log commands to logit.log"
+  puts "   logit start <filename>           Start a logit shell and log commands to supplied file"
+  puts ""
+  puts "   logit \"this is a comment\"        Log the quoted string as a comment"
+  puts ""
+  puts "   logit                            Log the previous command"
+  puts "   logit 0 \"this is a comment\"      Log the previous command preceded by a comment line"
+  puts ""
+  puts "   logit -N                         Log the Nth previous command"
+  puts "   logit -N \"this is a comment\"     Log the Nth previous command preceded by a comment line"
+  puts ""
+  puts "   logit N                          Log a specific command from the history"
+  puts "   logit N \"this is a comment\"      Log a specific command from the history preceded by a comment line"
+  puts ""
+  puts "   logit show                       Output the contents of the logit log file"
+end
+
+
+def error_not_in_shell()
+  STDERR.puts "ERROR: You need to run 'logit start' before this command"
+  exit    
+end
+
+#-------------------------------------------
+
+abort "Usage: #{$0} help  -- for list of options" if ARGV.length > 2
+
+
+# if not in a logit_sh shell this will be nil
+log_file = ENV['LOGIT_LOGFILE']
+ 
+if ARGV.length > 0
+  
+  if ARGV[0] == 'help' or ARGV[0] == '-h' or ARGV[0] == '--help'
+
+    output_help()
+
+  elsif ARGV[0] == 'show'
+
+    if ENV['LOGIT_SHELL']    
+      output_current_log(log_file)
+    else
+      error_not_in_shell() 
+    end
+
+  elsif ARGV[0] == 'start'
+    
+    if not ENV['LOGIT_SHELL']
+          
+      if ARGV.length == 2
+        exec "/usr/local/bin/logit_sh  #{ARGV[1]}"
+      else
+        exec "/usr/local/bin/logit_sh"
+      end
+
+    else
+      STDERR.puts "ERROR: 'logit start' cannot be run from inside a logit shell"
+      exit
+    end
+
+  elsif ARGV[0] =~ /^[\-\d]+/
+    # numeric argument
+
+    if ENV['LOGIT_SHELL']    
+
+      if ARGV.length == 2
+        # a comment follows the number
+        add_command(log_file, ARGV[0].to_i, ARGV[1])
+      else
+        add_command(log_file, ARGV[0].to_i)
+      end
+
+    else
+      error_not_in_shell()   
+    end
+
+  else
+    # string argument
+    
+    if ENV['LOGIT_SHELL']    
+      add_comment(log_file, ARGV[0])
+    else
+      error_not_in_shell() 
+    end
+
+  end
+
+else
+  # no arguments
+  if ENV['LOGIT_SHELL']
+    # log the last command
+    add_command(log_file)
+  else
+    output_help()
+  end
+  
+end
+
+
+
