@@ -121,9 +121,9 @@ if ARGV.length > 0
     if not ENV['LOGIT_SHELL']
           
       if ARGV.length == 2
-        exec "/Users/jones/Documents/craic/craic/logit/logit_sh  #{ARGV[1]}"
+        exec "/usr/local/bin/logit_sh  #{ARGV[1]}"
       else
-        exec "/Users/jones/Documents/craic/craic/logit/logit_sh"
+        exec "/usr/local/bin/logit_sh"
       end
 
     else
